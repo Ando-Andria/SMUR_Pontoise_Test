@@ -1,0 +1,77 @@
+CREATE TABLE Fonction(
+   id SERIAL,
+   nom VARCHAR(200)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Compte(
+   id SERIAL,
+   identifiant VARCHAR(50)  NOT NULL,
+   mot_de_passe VARCHAR(255)  NOT NULL,
+   derniere_connexion TIMESTAMP,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Utilisateur(
+   id SERIAL,
+   nom VARCHAR(255) ,
+   prenom VARCHAR(255) ,
+   mail_perso VARCHAR(255) ,
+   mail_pro VARCHAR(255) ,
+   telephone VARCHAR(10) ,
+   compte_utilisateur INTEGER NOT NULL,
+   PRIMARY KEY(id),
+   UNIQUE(mail_perso),
+   UNIQUE(mail_pro),
+   FOREIGN KEY(compte_utilisateur) REFERENCES Compte(id)
+);
+
+CREATE TABLE Metier(
+   id SERIAL,
+   nom VARCHAR(200)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Bureau(
+   id SERIAL,
+   nom VARCHAR(200)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Modules(
+   id SERIAL,
+   nom VARCHAR(200)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Utilisateur_fonction(
+   fonction_id INTEGER,
+   utilisateur_id INTEGER,
+   PRIMARY KEY(fonction_id, utilisateur_id),
+   FOREIGN KEY(fonction_id) REFERENCES Fonction(id),
+   FOREIGN KEY(utilisateur_id) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE Utilisateur_metier(
+   utilisateur_id INTEGER,
+   metier_id INTEGER,
+   PRIMARY KEY(utilisateur_id, metier_id),
+   FOREIGN KEY(utilisateur_id) REFERENCES Utilisateur(id),
+   FOREIGN KEY(metier_id) REFERENCES Metier(id)
+);
+
+CREATE TABLE Utilisateur_bureau(
+   utilisateur_id INTEGER,
+   bureau_id INTEGER,
+   PRIMARY KEY(utilisateur_id, bureau_id),
+   FOREIGN KEY(utilisateur_id) REFERENCES Utilisateur(id),
+   FOREIGN KEY(bureau_id) REFERENCES Bureau(id)
+);
+
+CREATE TABLE Utilisateur_module(
+   utilisateur_id INTEGER,
+   module_id INTEGER,
+   PRIMARY KEY(utilisateur_id, module_id),
+   FOREIGN KEY(utilisateur_id) REFERENCES Utilisateur(id),
+   FOREIGN KEY(module_id) REFERENCES Modules(id)
+);
